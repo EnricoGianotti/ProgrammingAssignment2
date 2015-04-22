@@ -1,15 +1,39 @@
-## Put comments here that give an overall description of what your
-## functions do
+# The intention of the following functions is to save computational time by avoiding
+# repeated calculations. The result is stored in the cache and then recalled if needed.
 
-## Write a short comment describing this function
 
+# The function makeCacheMatrix takes a matrix as the input and defines a list in
+# a different environment. This list is composed by four functions: two of them
+# set the values of the input and of the result in the cache, and two of them are
+# functions that are needed to recall these values.
 makeCacheMatrix <- function(x = matrix()) {
+      m <- NULL
+      set <- function(y) {
+            x <<- y
+            m <<- NULL
+      }
+      get <- function() x
+      setinv <- function(solve) m <<- solve
+      getinv <- function() m
+      list(set = set, get = get,
+           setinv = setinv,
+           getinv = getinv)
 
 }
 
-
-## Write a short comment describing this function
-
+# The function cacheSolve is a substitute of the function solve. Unlike the original
+# function, before calculating the result cacheSolve checks whether the result is
+# already in the cache; in this case any calculation will be avoided and the result
+# will be printed and the information that the result was already in the cache provided.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+      m <- x$getinv()
+      if(!is.null(m)) {
+            message("getting cached data")
+            return(m)
+      }
+      data <- x$get()
+      m <- solve(data, ...)
+      x$setinv(m)
+      m
+
 }
