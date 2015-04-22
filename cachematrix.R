@@ -1,5 +1,11 @@
 # The intention of the following functions is to save computational time by avoiding
 # repeated calculations. The result is stored in the cache and then recalled if needed.
+# How to use the functions:
+#     - set a matrix A <- matrix(data, nrow, ncol, byrow, dimnames)
+#     - define the list of functions M <- makeCacheMatrix(A)
+#     - set the vector b such that length(b)=nrow(A)
+#     - solve the linear system Ax=b, that is x=A^(-1)b, by calling cacheSolve(M, b).
+# The result will be provided and possible comments printed.
 
 
 # The function makeCacheMatrix takes a matrix as the input and defines a list in
